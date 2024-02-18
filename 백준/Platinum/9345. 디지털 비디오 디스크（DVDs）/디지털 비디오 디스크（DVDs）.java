@@ -5,7 +5,6 @@ public class Main {
 	static int[] MAX_DVDs;
 	static int[] MIN_DVDs;
 	static int N, K, STANDARD;
-	static boolean NEED_UPDATE;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int t = Integer.parseInt(br.readLine());
@@ -25,13 +24,13 @@ public class Main {
 				MAX_DVDs[i + STANDARD] = i;
 				MIN_DVDs[i + STANDARD] = i;
 			}
+			initialize();
 			for (int i = 0; i < K; ++i) {
 				st = new StringTokenizer(br.readLine(), " ");
 				for (int j = 0; j < 3; ++j) {
 					commands[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
-			NEED_UPDATE = true;
 			for (int[] command : commands) {
 				int a = command[1] + STANDARD;
 				int b = command[2] + STANDARD;
@@ -43,7 +42,8 @@ public class Main {
 					MIN_DVDs[a] = MIN_DVDs[b];
 					MAX_DVDs[b] = tmp;
 					MIN_DVDs[b] = tmp;
-					NEED_UPDATE = true;
+					update(a / 2);
+					update(b / 2);
 				}
 			}
 		}
@@ -52,10 +52,6 @@ public class Main {
 	}
 	
 	private static boolean isRightOrder(int a, int b) {
-		if (NEED_UPDATE) {
-			update();
-			NEED_UPDATE = false;
-		}
 		int start = a;
 		int end = b;
 		int minValue = MIN_DVDs[start];
@@ -74,7 +70,15 @@ public class Main {
 		return minValue == (a - STANDARD) && maxValue == (b - STANDARD);
 	}
 	
-	private static void update() {
+	private static void update(int number) {
+		while (number > 0) {
+			MIN_DVDs[number] = Math.min(MIN_DVDs[number * 2], MIN_DVDs[number * 2 + 1]);
+			MAX_DVDs[number] = Math.max(MAX_DVDs[number * 2], MAX_DVDs[number * 2 + 1]);
+			number >>= 1;
+		}
+	}
+	
+	private static void initialize() {
 		for (int i = STANDARD - 1; i > 0; --i) {
 			MIN_DVDs[i] = Math.min(MIN_DVDs[i * 2], MIN_DVDs[i * 2 + 1]);
 			MAX_DVDs[i] = Math.max(MAX_DVDs[i * 2], MAX_DVDs[i * 2 + 1]);
