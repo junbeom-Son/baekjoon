@@ -5,7 +5,7 @@ caseNumber = 1
 answers = []
 while True:
     L, P, V = map(int, input().split())
-    if L == 0 and P == 0 and V == 0:
+    if L == P == V == 0:
         break
     count = V // P * L
     V %= P
