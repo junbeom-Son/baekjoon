@@ -30,8 +30,6 @@ def solution(N, dice):
         answer += ((4 * (N - 1) * (N - 2)) + ((N - 2) * (N - 2))) * min(dice)
 
     return answer
-    
-        
 
 N = int(input())
 dice = list(map(int, input().split()))
