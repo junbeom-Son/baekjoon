@@ -1,13 +1,10 @@
 def initialize(N):
     counts = set()
-    
-    while N > 0:
-        num = 1
-        while num <= N:
-            num <<= 1
-        num >>= 1
-        counts.add(num)
-        N -= num
+    num = 1
+    while num <= N:
+        if num & N > 0:
+            counts.add(num)
+        num <<= 1
 
     return counts
 
